@@ -1,0 +1,29 @@
+local hoops = workspace.Hoops:GetChildren()
+local localPlayer = game.Players.LocalPlayer
+
+-- Set the initial and final positions
+local initialYOffset = -1.8  -- 3 studs below the player's head
+local finalYOffset = -5      -- Level with the player's feet
+
+while true do
+    for _, hoop in ipairs(hoops) do
+        if hoop.Name == "Hoop" then
+            local playerCharacter = localPlayer.Character
+            if playerCharacter then
+                local playerHead = playerCharacter:FindFirstChild("Head")
+                if playerHead then
+                    local targetYOffset = initialYOffset
+
+                    if playerCharacter:FindFirstChild("HumanoidRootPart").Velocity.Magnitude > 0.1 then
+                        targetYOffset = finalYOffset
+                    end
+
+                    local targetPosition = playerHead.Position + Vector3.new(0, targetYOffset, 0)
+                    hoop.CFrame = CFrame.new(targetPosition)
+                end
+            end
+        end
+    end
+
+    wait(0.1)  -- Adjust the delay for the desired update rate
+end
